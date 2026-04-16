@@ -3,7 +3,7 @@ Entry point: an LLM orchestrator uses tool calling to run `main.run_pipeline`.
 Set GOOGLE_API_KEY in .env or the environment before running.
 """
 
-import env_load  # noqa: F401 — loads GOOGLE_API_KEY from .env when python-dotenv is installed
+import env_load  
 
 import os
 
@@ -14,7 +14,7 @@ import main
 
 MODEL_NAME = llm_ops.MODEL_NAME
 
-# Filled before orchestrator call so the tool can use the same client instance.
+
 _active_client = None
 
 

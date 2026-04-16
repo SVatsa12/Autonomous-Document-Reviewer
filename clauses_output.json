@@ -1,27 +1,33 @@
 [
   {
+    "clause_number": "A",
+    "clause_title": "",
+    "clause_text": "The Party of the first part is the absolute owner of all that piece and parcel of Flat Bearing No. B1 on the first floor of the multistoried building known as \"Farvella Apartments\" situated at No. 92/1, Lavelle Road, Bangalore 560001 having super-built up area of 1570 Sq. Ft. (hereinafter referred to as the 'Schedule Premise' morefully described in the Schedule hereunder)."
+  },
+  {
+    "clause_number": "B",
+    "clause_title": "",
+    "clause_text": "The Party of the Second Part is desirous to taking on rent, the Schedule Premise and the Lessor has agreed to give on rent, the Schedule Premise to the Lessee on the following mutually agreed terms and conditions:"
+  },
+  {
     "clause_number": "1",
     "clause_title": "",
-    "clause_text": "That in consideration of the rents hereinafter reserved and agreed to be paid by the Tenant to the Owner, and the Tenant agreeing to comply with the covenants and conditions as set out in this Rental Agreement, the Owner does hereby grant and demise unto the Tenant the Scheduled Premises for a period of Three YearsEleven (11) months.",
-    "rent": null
+    "clause_text": "That in consideration of the rents hereinafter reserved and agreed to be paid by the Tenant to the Owner, and the Tenant agreeing to comply with the covenants and conditions as set out in this Rental Agreement, the Owner does hereby grant and demise unto the Tenant the Scheduled Premises for a period of Three Years Eleven (11) months."
   },
   {
     "clause_number": "2(i)",
     "clause_title": "",
-    "clause_text": "The Owner and the Tenant hereby agree that the term of the Rent created hereunder shall be for a period of Three Eleven years months commencing from (hereinafter referred to as the \"Effective Date\") i.e., from 10.08.2024 to 1010.0807.20272025. The instant Rental Agreement shall come into effect from 10.08.2024.",
-    "rent": null
+    "clause_text": "The Owner and the Tenant hereby agree that the term of the Rent created hereunder shall be for a period of Three / Eleven years months commencing from (hereinafter referred to as the \"Effective Date\") i.e., from 10.08.2024 to 10.08.2027 / 10.07.2025. The instant Rental Agreement shall come into effect from 10.08.2024."
   },
   {
     "clause_number": "2(ii)",
     "clause_title": "",
-    "clause_text": "It is further understood and agreed to between the parties that any renewal beyond the period prescribed shall be by the execution of a fresh rental agreement on such terms and conditions as mutually agreed to by the parties.",
-    "rent": null
+    "clause_text": "It is further understood and agreed to between the parties that any renewal beyond the period prescribed shall be by the execution of a fresh rental agreement on such terms and conditions as mutually agreed to by the parties."
   },
   {
     "clause_number": "2(iii)",
     "clause_title": "",
-    "clause_text": "After completion of the tenancy period of 11 (eleven) months3 years as mentioned above, the instant agreement can be renewed through execution of a fresh agreement for a further term of 11 (eleven) months3 years on such mutually agreeable terms, with a 5% enhancement in the lease rental of the previous year. Upon culmination of 3 11 (eleven) monthsyears the agreement is deemed to be terminated due to efflux of time.",
-    "rent": null
+    "clause_text": "After completion of the tenancy period of 11 (eleven) months / 3 years as mentioned above, the instant agreement can be renewed through execution of a fresh agreement for a further term of 11 (eleven) months / 3 years on such mutually agreeable terms, with a 5% enhancement in the lease rental of the previous year. Upon culmination of 3 / 11 (eleven) months/years the agreement is deemed to be terminated due to efflux of time."
   },
   {
     "clause_number": "3(i)",
@@ -38,25 +44,23 @@
   {
     "clause_number": "3(iii)",
     "clause_title": "",
-    "clause_text": "The TDS shall be deducted from the above said rental amount as per the existing Income Tax ACT, and the certificate against such deductions shall be issued in accordance with the IT Rules.",
-    "rent": null
+    "clause_text": "The TDS shall be deducted from the above said rental amount as per the existing Income Tax ACT, and the certificate against such deductions shall be issued in accordance with the IT Rules."
   },
   {
     "clause_number": "3(iv)",
     "clause_title": "",
-    "clause_text": "The rent for 1st year shall be Rs.1,00,000/- (from 10-08-2024 to 10-08-2025) per month. The rent for 2nd year shall enhance by 5% That is Rs 1,05,000 (for the period of 10-08-2025 to 10-08-2026). Further, 5% increase in the following year which is Rs 1,10,250 (for the period 10-08-2026 to 10-08-2027)",
+    "clause_text": "The rent for 1st year shall be Rs.1,00,000/- (from 10-08-2024 to 10-08-2025) per month. The rent for 2nd year shall increase by 5% that is Rs 1,05,000 (for the period of 10-08-2025 to 10-08-2026). Further, 5% increase in the following year which is Rs 1,10,250 (for the period 10-08-2026 to 10-08-2027).",
     "rent": null
   },
   {
     "clause_number": "4(i)",
     "clause_title": "",
-    "clause_text": "As security for due discharge by the Tenant of his obligations, the Tenant has agreed to pay a sum of Rs. 6,00,000 (Rupees Six Lakhs only) as interest free refundable security deposit. The parties have agreed that the said sum of Rs. 6,00,000/- (Rupees Six Lakh only) shall be paid as advance by way of Cheque bearing No. _____________"
+    "clause_text": "As security for due discharge by the Tenant of his obligations, the Tenant has agreed to pay a sum of Rs. 6,00,000 (Rupees Six Lakhs only) as interest free refundable security deposit. The parties have agreed that the said sum of Rs. 6,00,000/- (Rupees Six Lakh only) shall be paid as advance by way of Cheque bearing No. ___________"
   },
   {
     "clause_number": "4(ii)",
     "clause_title": "",
-    "clause_text": "The entire security deposit shall be refunded by the Owner to the Tenant simultaneously with the return of possession of the Schedule Premise on the expiry or earlier termination of the Rental Agreement subject to deductions if any, pertaining to maintenance of the Apartment such as painting, cleaning, restoration of any damages.",
-    "rent": null
+    "clause_text": "The entire security deposit shall be refunded by the Owner to the Tenant simultaneously with the return of possession of the Schedule Premise on the expiry or earlier termination of the Rental Agreement subject to deductions if any, pertaining to maintenance of the Apartment such as painting, cleaning, restoration of any damages."
   },
   {
     "clause_number": "5(iii)",
@@ -122,8 +126,7 @@
   {
     "clause_number": "6(i)",
     "clause_title": "",
-    "clause_text": "That the Owner along with his wife are the sole and absolute owner of the Schedule Premise and has the absolute and unencumbered right to lease the Schedule Premise and is authorized by his wife as well to execute the instant Rental Agreement. There is otherwise no legal impediment to lease the Schedule Premise.",
-    "rent": null
+    "clause_text": "That the Owner along with his wife are the sole and absolute owner of the Schedule Premise and has the absolute and unencumbered right to lease the Schedule Premise and is authorized by his wife as well to execute the instant Rental Agreement. There is otherwise no legal impediment to lease the Schedule Premise."
   },
   {
     "clause_number": "6(ii)",
@@ -133,8 +136,7 @@
   {
     "clause_number": "6(iii)",
     "clause_title": "",
-    "clause_text": "That the Tenant paying the Rent herein reserved and performing the terms and conditions on the Tenant's part herein contained, the Tenant shall be entitled to peaceful and quiet use and enjoyment of the Schedule Premise during the lease period.",
-    "rent": null
+    "clause_text": "That the Tenant paying the Rent herein reserved and performing the terms and conditions on the Tenant's part herein contained, the Tenant shall be entitled to peaceful and quiet use and enjoyment of the Schedule Premise during the lease period."
   },
   {
     "clause_number": "6(iv)",
@@ -142,33 +144,32 @@
     "clause_text": "Upon the expiry of the agreement or its earlier termination thereof, to refund fo"
   },
   {
-    "clause_number": "6.(v)",
-    "clause_title": "Delivery of Vacant Possession",
+    "clause_number": "v",
+    "clause_title": "Return of Vacant Possession and Condition",
     "clause_text": "On termination of the tenancy the TENANT shall deliver back vacant possession of the schedule property along with Furniture, electronic items, fittings and all the fixtures to the OWNER in good working conditions in which it was let out subject only to any change caused by normal wear and tear."
   },
   {
-    "clause_number": "6.(vi)",
-    "clause_title": "Cleaning and Damage Charges on Vacating",
+    "clause_number": "vi",
+    "clause_title": "Cleaning, Repairs and Painting upon Vacating",
     "clause_text": "At the time of vacating the schedule premises, the Tenant agrees to get the premises cleaned by professional cleaners like Urban Company or any other such cleaners approved by the Owner and return it in the same condition as it was handed over. Further, if any Furniture, Electronic items, fittings and fixtures or other hardware fixtures are broken or damaged, the actual cost of the fitting & fixture with labor charges and applicable taxes shall be deducted from the security deposit. Furthermore, the tenant agrees to pay for the painting charge upon termination which shall be done through the owner's recommended painters."
   },
   {
-    "clause_number": "7.(i)",
-    "clause_title": "Duration, Exceptions to Non-Termination, and Default Conditions",
-    "clause_text": "That the duration of this Rental Agreement shall be fixed for a period of 3 years, commencing from 10th August 2024 to 10th August 2027. Neither party shall have the right to terminate the lease during the initial term of 3 years except in the case of mutual understanding. If the Tenant makes any default in the payment of the Rent for two consecutive months or commits a breach of the Tenant’s obligations under this Agreement and fails to rectify the same within a period of 30 (Thirty) days after being notified of such default by the Owner, the Owner shall be entitled to forthwith terminate this Agreement and the tenant shall hand over physical vacant possession of the Schedule premise to the Owner. Or in case of non-payment of rent for consecutive 2 months or delay in the payment of rent for 2 consecutive months, in which case, the Tenant must vacate the Scheduled Premises, without notice. This due amount, if applicable, shall be deductible from the Security Deposit. If the whole of the Schedule Premise is at any time, destroyed or damaged by a Force Majeure event such as fire or other causality or accident, strike, war or other violence, any law, or regulation of any Government or any act or condition whatsoever beyond the reasonable control of the Owner (and not due to any act, neglect or default of the Tenant), so as to be rendered inaccessible or uninhabitable for a period beyond two (2) months, the Tenant shall have the right to terminate the lease with immediate effect, without any cost or liability, including the liability of payment of rent for the said period of two (2) months during which the Leased Premises is effected by such Force Majeure event.",
-    "rent": null
+    "clause_number": "7(i)",
+    "clause_title": "Duration and Conditions for Termination",
+    "clause_text": "That the duration of this Rental Agreement shall be fixed for a period of 3 years, commencing from 10th August 2024 to 10th August 2027. Neither party shall have the right to terminate the lease during the initial term of 3 years except in the case of mutual understanding or in case of non-payment of rent for consecutive 2 months or delay in the payment of rent for 2 consecutive months, in which case, the Tenant must vacate the Scheduled Premises, without notice. This due amount, if applicable, shall be deductible from the Security Deposit. If the Tenant makes any default in the payment of the Rent for two consecutive months or commits a breach of the Tenant’s obligations under this Agreement and fails to rectify the same within a period of 30(Thirty) days after being notified of such default by the Owner, the Owner shall be entitled to forthwith terminate this Agreement and the tenant shall hand over physical vacant possession of the Schedule premise to the Owner. If the whole of the Schedule Premise is at any time, destroyed or damaged by a Force Majeure event such as fire or other causality or accident, strike, war or other violence, any law, or regulation of any Government or any act or condition whatsoever beyond the reasonable control of the Owner (and not due to any act, neglect or default of the Tenant), so as to be rendered inaccessible or uninhabitable for a period beyond two (2) months, the Tenant shall have the right to terminate the lease with immediate effect, without any cost or liability, including the liability of payment of rent for the said period of two (2) months during which the Leased Premises is effected by such Force Majeure event."
   },
   {
-    "clause_number": "7.(v)",
-    "clause_title": "Effect of Termination on Obligations",
+    "clause_number": "7(v)",
+    "clause_title": "Release of Obligations Post-Termination",
     "clause_text": "Upon termination, the Owner and the Tenant shall be released from all obligations and liabilities to the other occurring or arising after the date of such termination, provided that no such termination will relieve either party hereto from any liability arising under this agreement occurring prior to termination. Any provision of this agreement, which is expressly or by implication to continue in force after termination, shall continue in full force and effect."
   },
   {
-    "clause_number": "7.(vi)",
+    "clause_number": "7(vi)",
     "clause_title": "Tenant's Termination for Personal Reasons",
     "clause_text": "In the event the Tenant intends to terminate the instant Lease Deed due to personal reasons, the same may be terminated with a prior notice of 60 days to the Owner."
   },
   {
-    "clause_number": "8.",
+    "clause_number": "8",
     "clause_title": "Jurisdiction",
     "clause_text": "In the event of any dispute the parties will be subject to the jurisdiction of the Courts at Bengaluru."
   }

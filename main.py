@@ -1,12 +1,11 @@
 """Contract pipeline: PDF → clauses (LLM + per-rule passes) → rent/deposit analysis."""
 
-import env_load  # noqa: F401 — loads GOOGLE_API_KEY from .env when python-dotenv is installed
-
+import env_load 
 import json
 import sys
 import time
 
-# Show prints immediately in terminals/IDEs that fully buffer stdout.
+
 try:
     sys.stdout.reconfigure(line_buffering=True)
 except (AttributeError, OSError):
@@ -28,13 +27,14 @@ from llm_ops import (
     EXTRACTION_API_MODE,
     MODEL_NAME,
     extract_clauses_for_chunk,
-    print_token_report,
 )
+from vector_db import ClauseVectorDB
 
-# Smaller chunks → shorter per-request prompts (often faster each call); more chunks if the PDF is long.
+
 CHUNK_MAX_CHARS = 8000
 # Pause between chunks to ease rate limits (was 12s).
 CHUNK_SLEEP_SEC = 2
+VECTOR_DB_PATH = "clause_vectors.json"
 
 
 def run_pipeline(pdf_path: str = "rent2.pdf", client=None):
@@ -84,8 +84,20 @@ def run_pipeline(pdf_path: str = "rent2.pdf", client=None):
     print(f"\nExtracted {len(all_clauses)} clauses\n", flush=True)
     print("=" * 50, flush=True)
 
+    print("\nBuilding vector database for semantic clause search...", flush=True)
+    vector_db = ClauseVectorDB(persist_path=VECTOR_DB_PATH)
+    vector_db.add_clauses(client, all_clauses)
+    vector_db.save()
+    print(f"Vector DB saved to {VECTOR_DB_PATH}", flush=True)
+
     global_rent = None
-    for c in all_clauses:
+    rent_matches = vector_db.search(
+        client,
+        "monthly rent amount payable by tenant",
+        top_k=5,
+    )
+    rent_candidates = [r["clause"] for r in rent_matches] if rent_matches else all_clauses
+    for c in rent_candidates:
         if is_rent_clause(c):
             rent = extract_rent_with_regex(c.get("clause_text"))
             c["rent"] = rent
@@ -95,7 +107,7 @@ def run_pipeline(pdf_path: str = "rent2.pdf", client=None):
     print("\n RENT ANALYSIS\n")
     print("=" * 50)
 
-    for c in all_clauses:
+    for c in rent_candidates:
         result = analyze_rent_clause(c)
 
         if result:
@@ -108,7 +120,15 @@ def run_pipeline(pdf_path: str = "rent2.pdf", client=None):
     print("\n DEPOSIT ANALYSIS\n")
     print("=" * 50)
     found_deposit = None
-    for c in all_clauses:
+    deposit_matches = vector_db.search(
+        client,
+        "security deposit refundable amount and terms",
+        top_k=5,
+    )
+    deposit_candidates = (
+        [r["clause"] for r in deposit_matches] if deposit_matches else all_clauses
+    )
+    for c in deposit_candidates:
         text = c.get("clause_text", "")
         _, deposit = extract_rent_and_deposit(text)
         if deposit is not None:
@@ -118,7 +138,7 @@ def run_pipeline(pdf_path: str = "rent2.pdf", client=None):
     if found_deposit is not None:
         print(f"FOUND DEPOSIT: {found_deposit}")
 
-    for c in all_clauses:
+    for c in deposit_candidates:
         text = c.get("clause_text")
         _, deposit = extract_rent_and_deposit(text)
 
@@ -138,7 +158,6 @@ def run_pipeline(pdf_path: str = "rent2.pdf", client=None):
         json.dump(all_clauses, f, indent=2, ensure_ascii=False)
 
     print(f"\n Saved to {out_path}")
-    print_token_report()
 
 
 if __name__ == "__main__":
