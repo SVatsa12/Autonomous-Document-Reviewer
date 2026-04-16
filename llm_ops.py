@@ -4,7 +4,7 @@ import json
 
 from functions import extract_clauses_locally, safe_parse
 
-MODEL_NAME = "gemini-2.5-flash"
+MODEL_NAME = "gemini-flash-latest"
 API_DISABLED = False
 
 # "single" → one Gemini call per chunk (all rules in one prompt; fewest API calls).
