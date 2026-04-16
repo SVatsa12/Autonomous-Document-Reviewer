@@ -191,14 +191,14 @@ def reset_token_tracker():
 
 def tracked_generate(client, contents, config=None, model=MODEL_NAME, label=""):
     if label:
-        print(f"  → LLM request: {label} …", flush=True)
+        print(f"  -> LLM request: {label} ...", flush=True)
     kwargs = {"model": model, "contents": contents}
     if config is not None:
         kwargs["config"] = config
     response = client.models.generate_content(**kwargs)
     token_tracker.add(response)
     if label:
-        print(f"  ← Done: {label}", flush=True)
+        print(f"  <- Done: {label}", flush=True)
     return response
 
 

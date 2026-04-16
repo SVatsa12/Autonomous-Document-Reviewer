@@ -1,5 +1,5 @@
 """
-Entry point: an LLM orchestrator uses tool calling to run `main.run_pipeline`.
+Entry point: run contract pipeline once, then summarize results.
 Set GOOGLE_API_KEY in .env or the environment before running.
 """
 
@@ -31,7 +31,7 @@ def run_contract_pipeline(pdf_path: str = "rent2.pdf") -> str:
 
 
 def run_orchestrator(pdf_path: str = "rent2.pdf"):
-    """Ask the model to invoke the pipeline via function calling, then print token usage."""
+    """Run pipeline exactly once, then optionally ask model for a short completion note."""
     global _active_client
 
     if not os.environ.get("GOOGLE_API_KEY"):
@@ -42,20 +42,15 @@ def run_orchestrator(pdf_path: str = "rent2.pdf"):
     llm_ops.reset_token_tracker()
     _active_client = genai.Client()
 
-    instruction = (
-        "The user wants to process a rental contract PDF and produce clause extraction "
-        "plus rent and deposit analysis. "
-        f"You MUST call the tool run_contract_pipeline with pdf_path={pdf_path!r}. "
-        "Do not answer with plain text only; use the tool."
-    )
+    # Avoid repeated automatic tool invocations by executing the pipeline directly once.
+    tool_result = run_contract_pipeline(pdf_path=pdf_path)
 
     response = _active_client.models.generate_content(
         model=MODEL_NAME,
-        contents=instruction,
-        config={
-            "tools": [run_contract_pipeline],
-            "automatic_function_calling": {"ignore_call_history": True},
-        },
+        contents=(
+            "Summarize this processing result in one short sentence for the user: "
+            f"{tool_result}"
+        ),
     )
 
     llm_ops.token_tracker.add(response)

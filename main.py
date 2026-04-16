@@ -7,7 +7,7 @@ import time
 
 
 try:
-    sys.stdout.reconfigure(line_buffering=True)
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace", line_buffering=True)
 except (AttributeError, OSError):
     pass
 
@@ -112,7 +112,7 @@ def run_pipeline(pdf_path: str = "rent2.pdf", client=None):
 
         if result:
             print(f"\nClause: {result['clause_number']}")
-            print(f"Rent: ₹{result['rent']}")
+            print(f"Rent: Rs {result['rent']}")
             print(f"Status: {result['status']}")
             print(f"Message: {result['message']}")
             print("-" * 40)
@@ -147,8 +147,8 @@ def run_pipeline(pdf_path: str = "rent2.pdf", client=None):
             result = check_deposit_fairness(rent, deposit)
 
             print(f"\nClause: {c['clause_number']}")
-            print(f"Rent: ₹{rent}")
-            print(f"Deposit: ₹{deposit}")
+            print(f"Rent: Rs {rent}")
+            print(f"Deposit: Rs {deposit}")
             print(f"Status: {result['status']}")
             print(f"Message: {result['message']}")
             print("-" * 40)

@@ -179,6 +179,12 @@ class ClauseVectorDB:
                 )
                 """
             )
+            cols = con.execute("PRAGMA table_info(documents)").fetchall()
+            col_names = {str(c[1]).lower() for c in cols}
+            if "active" not in col_names:
+                con.execute(
+                    "ALTER TABLE documents ADD COLUMN active INTEGER NOT NULL DEFAULT 1"
+                )
             con.commit()
 
     def _create_connection(self) -> sqlite3.Connection:
