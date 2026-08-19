@@ -1,14 +1,14 @@
-"""Gemini calls, per-rule extraction passes, and token accounting."""
+"""Groq calls, per-rule extraction passes, and token accounting."""
 
 import json
 
 from functions import extract_clauses_locally, safe_parse
 
-MODEL_NAME = "gemini-flash-latest"
+from groq_client import MODEL_NAME
 API_DISABLED = False
 
-# "single" → one Gemini call per chunk (all rules in one prompt; fewest API calls).
-# "per_rule" → one call for initial JSON + one call per CLAUSE_EXTRACTION_RULES entry.
+# "single" -> one Groq call per chunk (all rules in one prompt; fewest API calls).
+# "per_rule" -> one call for initial JSON + one call per CLAUSE_EXTRACTION_RULES entry.
 EXTRACTION_API_MODE = "single"
 
 # Extraction policy rules. In "per_rule" mode, each entry is its own API round-trip.
@@ -41,7 +41,7 @@ def _rules_bullet_list():
 
 
 def extract_clauses_for_chunk(client, chunk):
-    """Extract clauses via Gemini; API count depends on EXTRACTION_API_MODE."""
+    """Extract clauses via Groq; API count depends on EXTRACTION_API_MODE."""
     if EXTRACTION_API_MODE == "per_rule":
         return _extract_clauses_per_rule_passes(client, chunk)
     return _extract_clauses_single_call(client, chunk)

@@ -1,0 +1,126 @@
+{
+  "domain": "legal",
+  "description": "Compliance rules for legal documents (contracts, leases, agreements)",
+  "rules": [
+    {
+      "type": "presence",
+      "rule_id": "legal_mandatory_jurisdiction",
+      "name": "Governing Law Clause",
+      "description": "Contract must specify jurisdiction/governing law",
+      "category": "mandatory",
+      "required_clauses": [
+        "jurisdiction",
+        "governing law",
+        "applicable law",
+        "courts at"
+      ],
+      "severity": "critical",
+      "domain": "legal",
+      "semantic_match": true
+    },
+    {
+      "type": "presence",
+      "rule_id": "legal_mandatory_termination",
+      "name": "Termination Clause",
+      "description": "Contract must define termination conditions and notice period",
+      "category": "mandatory",
+      "required_clauses": [
+        "termination",
+        "notice period",
+        "vacate",
+        "early termination"
+      ],
+      "severity": "critical",
+      "domain": "legal"
+    },
+    {
+      "type": "presence",
+      "rule_id": "legal_mandatory_deposit",
+      "name": "Security Deposit Terms",
+      "description": "Security deposit amount and refund terms must be clear",
+      "category": "financial",
+      "required_clauses": [
+        "security deposit",
+        "deposit",
+        "refund"
+      ],
+      "severity": "critical",
+      "domain": "legal"
+    },
+    {
+      "type": "threshold",
+      "rule_id": "legal_deposit_ratio",
+      "name": "Deposit-to-Rent Ratio",
+      "description": "Security deposit should not exceed 3 months rent",
+      "category": "financial",
+      "threshold_type": "ratio",
+      "threshold_value": 3.0,
+      "field": "deposit",
+      "comparison_field": "rent",
+      "severity": "warning",
+      "domain": "legal"
+    },
+    {
+      "type": "threshold",
+      "rule_id": "legal_rent_reasonable",
+      "name": "Rent Reasonableness Check",
+      "description": "Monthly rent should be within reasonable bounds",
+      "category": "financial",
+      "threshold_type": "range",
+      "threshold_value": [5000, 500000],
+      "field": "rent",
+      "severity": "info",
+      "domain": "legal"
+    },
+    {
+      "type": "presence",
+      "rule_id": "legal_mandatory_maintenance",
+      "name": "Maintenance Responsibilities",
+      "description": "Contract must specify who handles repairs",
+      "category": "obligations",
+      "required_clauses": [
+        "maintenance",
+        "repairs",
+        "damage"
+      ],
+      "severity": "warning",
+      "domain": "legal"
+    },
+    {
+      "type": "forbidden",
+      "rule_id": "legal_unilateral_changes",
+      "name": "No Unilateral Changes",
+      "description": "Landlord cannot change terms without tenant consent",
+      "category": "fairness",
+      "forbidden_terms": [
+        "landlord may change terms",
+        "unilaterally amend",
+        "modify at any time"
+      ],
+      "severity": "warning",
+      "domain": "legal"
+    },
+    {
+      "type": "semantic",
+      "rule_id": "legal_compliance_gdpr_17",
+      "name": "GDPR Article 17 Compliance",
+      "description": "Check for right to erasure (if applicable)",
+      "category": "privacy",
+      "regulation_text": "GDPR Article 17: Right to erasure - data subjects have the right to have personal data erased.",
+      "severity": "info",
+      "domain": "legal",
+      "requires_llm": true
+    },
+    {
+      "type": "semantic",
+      "rule_id": "legal_unconscionable",
+      "name": "Unconscionability Check",
+      "description": "Check for grossly unfair or one-sided terms",
+      "category": "fairness",
+      "regulation_text": "Contracts should not contain terms that are grossly unfair or heavily one-sided in favor of one party.",
+      "severity": "critical",
+      "domain": "legal",
+      "requires_llm": true
+    }
+  ]
+}

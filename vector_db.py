@@ -488,6 +488,27 @@ class ClauseVectorDB:
                 }
                 self.insert(client, text=chunk, metadata=metadata, doc_id=f"{clause_number or 'clause'}:{idx}")
 
+    def add_regulations(self, client, regulations: List[Dict], chunk_size: int = 300):
+        """Add legal regulations to the vector store."""
+        for regulation in regulations:
+            reg_text = regulation.get("content", "")
+            reg_title = regulation.get("title", "")
+            reg_id = str(regulation.get("regulation_id", "")).strip()
+            chunks = chunk_text(reg_text, size=chunk_size) or [reg_text]
+            for idx, chunk in enumerate(chunks):
+                metadata = {
+                    "regulation_id": reg_id,
+                    "title": reg_title,
+                    "category": regulation.get("category", ""),
+                    "jurisdiction": regulation.get("jurisdiction", ""),
+                    "applicable_law": regulation.get("applicable_law", ""),
+                    "chunk_index": idx,
+                    "chunk_count": len(chunks),
+                    "source": "regulation",
+                    "regulation": regulation,
+                }
+                self.insert(client, text=chunk, metadata=metadata, doc_id=f"reg:{reg_id}:{idx}")
+
     def save(self):
         # Data is persisted incrementally in SQLite on each write.
         self._save_meta()

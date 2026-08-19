@@ -1,4 +1,4 @@
-"""Load GOOGLE_API_KEY from a .env file next to this package (optional if python-dotenv is installed)."""
+"""Load GROQ_API_KEY from a .env file next to this package."""
 
 from pathlib import Path
 

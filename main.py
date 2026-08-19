@@ -2,6 +2,7 @@
 
 import env_load 
 import json
+import os
 import sys
 import time
 
@@ -22,6 +23,7 @@ from functions import (
     is_rent_clause,
     split_text,
 )
+from enhanced_extraction import extract_rent_enhanced, extract_deposit_enhanced, analyze_deposit_fairness_enhanced
 from llm_ops import (
     CLAUSE_EXTRACTION_RULES,
     EXTRACTION_API_MODE,
@@ -40,9 +42,9 @@ VECTOR_DB_PATH = "clause_vectors.json"
 def run_pipeline(pdf_path: str = "rent2.pdf", client=None):
     """Full processing used by the LLM tool and for direct runs."""
     if client is None:
-        from google import genai
+        from groq_client import GroqClient
 
-        client = genai.Client()
+        client = GroqClient(api_key=os.environ.get("GROQ_API_KEY", ""))
 
     print("Extracting text...", flush=True)
     text = extract_text(pdf_path)
@@ -86,72 +88,93 @@ def run_pipeline(pdf_path: str = "rent2.pdf", client=None):
 
     print("\nBuilding vector database for semantic clause search...", flush=True)
     vector_db = ClauseVectorDB(persist_path=VECTOR_DB_PATH)
+
+    # Add contract clauses
     vector_db.add_clauses(client, all_clauses)
+
+    # Load and add regulations
+    print("Loading legal regulations...", flush=True)
+    import json as json_module
+    try:
+        regs_path = "regulations.json"
+        with open(regs_path, "r", encoding="utf-8") as f:
+            regulations = json_module.load(f)
+        vector_db.add_regulations(client, regulations)
+        print(f"Loaded {len(regulations)} regulations into vector DB", flush=True)
+    except FileNotFoundError:
+        print("Warning: regulations.json not found. RAG queries about legal standards will use only contract clauses.", flush=True)
+    except Exception as e:
+        print(f"Warning: Failed to load regulations: {e}", flush=True)
+
     vector_db.save()
     print(f"Vector DB saved to {VECTOR_DB_PATH}", flush=True)
 
-    global_rent = None
-    rent_matches = vector_db.search(
-        client,
-        "monthly rent amount payable by tenant",
-        top_k=5,
-    )
-    rent_candidates = [r["clause"] for r in rent_matches] if rent_matches else all_clauses
-    for c in rent_candidates:
-        if is_rent_clause(c):
-            rent = extract_rent_with_regex(c.get("clause_text"))
-            c["rent"] = rent
-            if rent is not None and global_rent is None:
-                global_rent = rent
-
-    print("\n RENT ANALYSIS\n")
+    # ============================================
+    # ENHANCED RENT EXTRACTION
+    # ============================================
+    print("\n" + "=" * 50)
+    print(" RENT ANALYSIS (Enhanced Extraction)")
     print("=" * 50)
 
-    for c in rent_candidates:
-        result = analyze_rent_clause(c)
+    # Use comprehensive extraction from ALL clauses
+    global_rent, rent_clause = extract_rent_enhanced(all_clauses)
 
-        if result:
-            print(f"\nClause: {result['clause_number']}")
-            print(f"Rent: Rs {result['rent']}")
-            print(f"Status: {result['status']}")
-            print(f"Message: {result['message']}")
-            print("-" * 40)
+    if global_rent:
+        print(f"\n✓ Found rent: Rs {global_rent:,}")
+        if rent_clause:
+            print(f"  Source: Clause {rent_clause.get('clause_number')}: {rent_clause.get('clause_text', '')[:100]}...")
+    else:
+        print("\n✗ No rent amount found in contract")
 
-    print("\n DEPOSIT ANALYSIS\n")
+    # Analyze all rent-related clauses
+    rent_found = False
+    for clause in all_clauses:
+        if is_rent_clause(clause):
+            rent_val = extract_rent_with_regex(clause.get("clause_text", ""))
+            clause["rent"] = rent_val
+            if rent_val and not rent_found:
+                result = analyze_rent_clause(clause)
+                if result:
+                    print(f"\nClause: {result['clause_number']}")
+                    print(f"Rent: Rs {result['rent']:,}")
+                    print(f"Status: {result['status']}")
+                    print(f"Message: {result['message']}")
+                    print("-" * 40)
+                    rent_found = True
+
+    # ============================================
+    # ENHANCED DEPOSIT EXTRACTION
+    # ============================================
+    print("\n" + "=" * 50)
+    print(" DEPOSIT ANALYSIS (Enhanced Extraction)")
     print("=" * 50)
-    found_deposit = None
-    deposit_matches = vector_db.search(
-        client,
-        "security deposit refundable amount and terms",
-        top_k=5,
-    )
-    deposit_candidates = (
-        [r["clause"] for r in deposit_matches] if deposit_matches else all_clauses
-    )
-    for c in deposit_candidates:
-        text = c.get("clause_text", "")
-        _, deposit = extract_rent_and_deposit(text)
-        if deposit is not None:
-            found_deposit = deposit
-            break
 
-    if found_deposit is not None:
-        print(f"FOUND DEPOSIT: {found_deposit}")
+    # Use comprehensive extraction from ALL clauses
+    found_deposit, deposit_clause = extract_deposit_enhanced(all_clauses)
 
-    for c in deposit_candidates:
-        text = c.get("clause_text")
-        _, deposit = extract_rent_and_deposit(text)
+    if found_deposit:
+        print(f"\n✓ Found security deposit: Rs {found_deposit:,}")
+        if deposit_clause:
+            print(f"  Source: Clause {deposit_clause.get('clause_number')}: {deposit_clause.get('clause_text', '')[:100]}...")
+    else:
+        print("\n✗ No security deposit amount found in contract")
 
-        if deposit is not None:
-            rent = global_rent
-            result = check_deposit_fairness(rent, deposit)
-
-            print(f"\nClause: {c['clause_number']}")
-            print(f"Rent: Rs {rent}")
-            print(f"Deposit: Rs {deposit}")
-            print(f"Status: {result['status']}")
-            print(f"Message: {result['message']}")
-            print("-" * 40)
+    # Analyze deposit fairness if we have both rent and deposit
+    if found_deposit and global_rent:
+        result = analyze_deposit_fairness_enhanced(global_rent, found_deposit)
+        print(f"\n--- Deposit Fairness Analysis ---")
+        print(f"Rent: Rs {global_rent:,}")
+        print(f"Deposit: Rs {found_deposit:,}")
+        print(f"Ratio: {found_deposit / global_rent:.2f}x")
+        print(f"Status: {result['status']}")
+        print(f"Message: {result['message']}")
+        if 'legal_note' in result:
+            print(f"Legal Note: {result['legal_note']}")
+        print("-" * 40)
+    elif found_deposit and not global_rent:
+        print("\n⚠ Cannot evaluate fairness: rent amount not found")
+    elif global_rent and not found_deposit:
+        print("\n⚠ Cannot evaluate fairness: deposit amount not found")
 
     out_path = "clauses_output.json"
     with open(out_path, "w", encoding="utf-8") as f:

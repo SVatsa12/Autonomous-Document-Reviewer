@@ -3,3 +3,8 @@ __pycache__/
 *.pyc
 .venv/
 venv/
+
+# Ignore documentation markdown files except the main README
+*.md
+!README.md
+!readme.md

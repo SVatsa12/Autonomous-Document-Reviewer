@@ -1,5 +1,16 @@
 google-genai
+groq
 pypdf
+python-docx
 python-dotenv
 faiss-cpu
 numpy
+pillow
+pytesseract
+pdf2image
+
+# Optional for production
+# scikit-learn  # For advanced embeddings
+# cohere  # For reranking
+# fastapi  # For web API
+# uvicorn  # ASGI server
