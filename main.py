@@ -42,7 +42,7 @@ VECTOR_DB_PATH = "clause_vectors.json"
 def run_pipeline(pdf_path: str = "rent2.pdf", client=None):
     """Full processing used by the LLM tool and for direct runs."""
     if client is None:
-        from groq_client import GroqClient
+        from google_client import GroqClient
 
         client = GroqClient(api_key=os.environ.get("GROQ_API_KEY", ""))
 

@@ -6,9 +6,9 @@ import argparse
 from pathlib import Path
 
 try:
-    from groq_client import GroqClient
+    from google_client import GroqClient
 except ImportError:
-    print("Error: groq not installed. Run: pip install groq")
+    print("Error: google-genai not installed. Run: pip install google-genai")
     sys.exit(1)
 
 from vector_db import ClauseVectorDB
@@ -16,32 +16,36 @@ from rag_engine import RAGQueryEngine
 
 
 def load_api_key():
-    """Load GROQ_API_KEY from .env file or environment."""
+    """Load GOOGLE_API_KEY from .env file or environment."""
     import os
     from dotenv import load_dotenv
 
     env_path = Path(".env")
     if env_path.exists():
         load_dotenv(env_path)
-
-    api_key = os.environ.get("GROQ_API_KEY")
+    api_key = os.environ.get("GOOGLE_API_KEY")
     if not api_key:
-        print("Error: GROQ_API_KEY not found. Set it in .env file or environment.")
+        print("Error: GOOGLE_API_KEY not found. Set it in .env file or environment.")
         sys.exit(1)
     return api_key
 
 
 def run_query(args):
     """Run a single query or interactive mode."""
-    api_key = load_api_key()
-    has_llm = True
-    try:
-        client = GroqClient(api_key=api_key)
-    except Exception as e:
-        print(f"Warning: Could not initialize LLM client: {e}")
-        print("Will run in OFFLINE mode (template-based answers only).")
+    if args.offline:
         client = None
         has_llm = False
+        print("Running in OFFLINE mode (template-based answers only).")
+    else:
+        api_key = load_api_key()
+        has_llm = True
+        try:
+            client = GroqClient(api_key=api_key)
+        except Exception as e:
+            print(f"Warning: Could not initialize LLM client: {e}")
+            print("Will run in OFFLINE mode (template-based answers only).")
+            client = None
+            has_llm = False
 
     # Load vector DB
     db_path = args.db_path or "clause_vectors.json"
@@ -55,6 +59,19 @@ def run_query(args):
 
     if args.query:
         # Single query mode
+        if args.offline:
+            from offline_query import offline_query
+
+            answer = offline_query(vector_db, args.query)
+            print("\n" + "=" * 60)
+            print("QUERY:", args.query)
+            print("=" * 60)
+            print("\nOFFLINE ANSWER:\n")
+            print(answer)
+            print("\n" + "-" * 60)
+            print("Sources: Using vector search only (no LLM)")
+            return
+
         try:
             result = rag.query(
                 client if has_llm else None,
@@ -255,6 +272,11 @@ Examples:
         action="store_true",
         dest="json_output",
         help="Output raw JSON with sources",
+    )
+    parser.add_argument(
+        "--offline",
+        action="store_true",
+        help="Answer without calling Gemini (single-query mode or interactive default)",
     )
 
     args = parser.parse_args()

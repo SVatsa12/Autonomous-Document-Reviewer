@@ -5,8 +5,8 @@
   "clauses": [
     {
       "clause_number": "1",
-      "clause_title": "FIXED-TERM AGREEMENT",
-      "clause_text": "LEASE): Tenants agree to lease this dwelling for a fixed term of one year, beginning July 1, 2012 and ending June 30, 2013. Upon expiration, this Agreement shall become a month-to-month agreement AUTOMATICALLY , UNLESS either Tenants or Owners notify the other party in writing at least 30 days prior to expiration that they do not wish this Agreement to continue on any basis."
+      "clause_title": "FIXED-TERM AGREEMENT (LEASE)",
+      "clause_text": "Tenants agree to lease this dwelling for a fixed term of one year, beginning July 1, 2012 and ending June 30, 2013. Upon expiration, this Agreement shall become a month-to-month agreement AUTOMATICALLY, UNLESS either Tenants or Owners notify the other party in writing at least 30 days prior to expiration that they do not wish this Agreement to continue on any basis."
     },
     {
       "clause_number": "2",
@@ -36,7 +36,17 @@
     {
       "clause_number": "7",
       "clause_title": "SECURITY DEPOSIT",
-      "clause_text": "Tenants hereby agree to pay a security deposit of $685 to be refunded upon vacating, returning the keys to the Landlord and termination of this contract according to other terms herein agreed. This deposit will be held to cover any possible damage to the property. No interest will be paid on this money and in no case will it be applied to back or future rent. It will be held intact by Landlord until at least thirty (30) working days after Tenants have vacated the property. At that time Landlord will inspect the premises thoroughly and assess any damages and/or needed repairs. This deposit money minus any necessary charges for missing/dead light bulbs, repairs, cleaning, etc., will then be returned to Tenant with a written explanation of deductions, within 60 days after they have vacated the property. Teacher Resources for Consumer.gov | Developed for the FTC by the Center for Applied Linguistics 8. CLEANING FEE Tenant hereby agrees to accept property in its present state of cleanliness. They agree to return the property in the same condition or pay a $200.00 minimum cleaning fee if the Landlord has to have the property professionally cleaned. 9. REMOV AL OF LANDLORD\u2019S PROPERTY: If anyone removes any property belonging to Landlord without the express written consent of the Landlord, this will constitute abandonment and surrender of the premises by Tenant and termination by them of this Rental Agreement. Landlord may also take further legal action."
+      "clause_text": "Tenants hereby agree to pay a security deposit of $685 to be refunded upon vacating, returning the keys to the Landlord and termination of this contract according to other terms herein agreed. This deposit will be held to cover any possible damage to the property. No interest will be paid on this money and in no case will it be applied to back or future rent. It will be held intact by Landlord until at least thirty (30) working days after Tenants have vacated the property. At that time Landlord will inspect the premises thoroughly and assess any damages and/or needed repairs. This deposit money minus any necessary charges for missing/dead light bulbs, repairs, cleaning, etc., will then be returned to Tenant with a written explanation of deductions, within 60 days after they have vacated the property."
+    },
+    {
+      "clause_number": "8",
+      "clause_title": "CLEANING FEE",
+      "clause_text": "Tenant hereby agrees to accept property in its present state of cleanliness. They agree to return the property in the same condition or pay a $200.00 minimum cleaning fee if the Landlord has to have the property professionally cleaned."
+    },
+    {
+      "clause_number": "9",
+      "clause_title": "REMOVAL OF LANDLORD\u2019S PROPERTY",
+      "clause_text": "If anyone removes any property belonging to Landlord without the express written consent of the Landlord, this will constitute abandonment and surrender of the premises by Tenant and termination by them of this Rental Agreement. Landlord may also take further legal action."
     },
     {
       "clause_number": "10",
@@ -51,7 +61,7 @@
     {
       "clause_number": "12",
       "clause_title": "NOTIFICATION OF SERIOUS BUILDING PROBLEMS",
-      "clause_text": "Tenant agrees to notify Landlord immediately if roof leaks, water spots appear on ceiling, or at the first sign of termite activity. Tenants also agree to notify the Owners immediately upon first discovering any signs of serious building problems such as foundation cracks, a tilting porch, a crack in plaster, buckling drywall or siding, a spongy floor, a leaky water heater, etc. If the tenant does not notify landlord in a prompt matter the tenant may be held financially responsible. Teacher Resources for Consumer.gov | Developed for the FTC by the Center for Applied Linguistics"
+      "clause_text": "Tenant agrees to notify Landlord immediately if roof leaks, water spots appear on ceiling, or at the first sign of termite activity. Tenants also agree to notify the Owners immediately upon first discovering any signs of serious building problems such as foundation cracks, a tilting porch, a crack in plaster, buckling drywall or siding, a spongy floor, a leaky water heater, etc. If the tenant does not notify landlord in a prompt matter the tenant may be held financially responsible."
     },
     {
       "clause_number": "13",
@@ -61,37 +71,30 @@
     {
       "clause_number": "14",
       "clause_title": "FULL DISCLOSURE",
-      "clause_text": "The Tenants signing this Rental Contract hereby state that all questions about this Rental Agreement have been answered, that they fully understand all the provisions of the agreement and the obligations and responsibilities of each party, as spelled out herein. They further state that they agree to fulfill their obligations in every respect or suffer the full legal and financial consequences of their actions or lack of action in violation of this agreement. Signature by the Tenant on this Rental Agreement is acknowledgement and he/she has received a signed copy of the Rental Agreement. Accepted this __________________ day of"
+      "clause_text": "The Tenants signing this Rental Contract hereby state that all questions about this Rental Agreement have been answered, that they fully understand all the provisions of the agreement and the obligations and responsibilities of each party, as spelled out herein. They further state that they agree to fulfill their obligations in every respect or suffer the full legal and financial consequences of their actions or lack of action in violation of this agreement. Signature by the Tenant on this Rental Agreement is acknowledgement and he/she has received a signed copy of the Rental Agreement."
     }
   ],
   "compliance": {
     "domain": "legal",
     "total_rules": 15,
     "passed": 6,
-    "failed": 7,
-    "not_evaluated": 2,
-    "compliance_score": 31.2,
+    "failed": 9,
+    "not_evaluated": 0,
+    "compliance_score": 25.0,
     "critical_issues": [
       "Missing required clauses: jurisdiction, governing law, applicable law",
       "Missing required clauses: notice period, vacate",
       "Missing required clauses: jurisdiction, governing law, applicable law, courts at",
       "Missing required clauses: notice period, vacate, early termination",
-      "Missing required clauses: refund"
+      "Missing required clauses: refund",
+      "Compliance check: FAIL (confidence: 95.0%)",
+      "Compliance check: FAIL (confidence: 95.0%)"
     ],
-    "not_evaluated_reasons": [
-      {
-        "rule_id": "legal_compliance_gdpr_17",
-        "reason": "no LLM client provided"
-      },
-      {
-        "rule_id": "legal_unconscionable",
-        "reason": "no LLM client provided"
-      }
-    ],
+    "not_evaluated_reasons": [],
     "overall_status": "FAIL",
     "extracted_context": {
-      "deposit": 685.0,
-      "rent": 685.0
+      "rent": 685.0,
+      "deposit": 685.0
     },
     "rule_results": [
       {
@@ -307,25 +310,69 @@
       },
       {
         "rule_id": "legal_compliance_gdpr_17",
-        "passed": null,
-        "message": "LLM client required for semantic compliance check",
-        "severity": "info",
-        "evidence": null,
-        "recommendation": "Provide LLM client or disable semantic checks",
-        "clause_refs": null,
-        "metadata": null,
-        "not_evaluated_reason": "no LLM client provided"
+        "passed": false,
+        "message": "Compliance check: FAIL (confidence: 95.0%)",
+        "severity": "critical",
+        "evidence": [
+          "Confidence: 95.0%",
+          "Reasoning: The contract consists entirely of standard residential lease provisions and contains no data protection or privacy terms. It fails to acknowledge, address, or establish a mechanism for tenants (data subjects) to exercise their right to erasure under GDPR Article 17.",
+          "Gaps: Absence of data privacy or data protection provisions, No explicit mention of data subjects' right to erasure under GDPR Article 17, No protocol, timeframe, or contact information specified for handling data deletion requests"
+        ],
+        "recommendation": "Add: Absence of data privacy or data protection provisions, No explicit mention of data subjects' right to erasure under GDPR Article 17, No protocol, timeframe, or contact information specified for handling data deletion requests",
+        "clause_refs": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10"
+        ],
+        "metadata": {
+          "confidence": 0.95,
+          "gaps": [
+            "Absence of data privacy or data protection provisions",
+            "No explicit mention of data subjects' right to erasure under GDPR Article 17",
+            "No protocol, timeframe, or contact information specified for handling data deletion requests"
+          ],
+          "conflicts": []
+        },
+        "not_evaluated_reason": null
       },
       {
         "rule_id": "legal_unconscionable",
-        "passed": null,
-        "message": "LLM client required for semantic compliance check",
+        "passed": false,
+        "message": "Compliance check: FAIL (confidence: 95.0%)",
         "severity": "critical",
-        "evidence": null,
-        "recommendation": "Provide LLM client or disable semantic checks",
-        "clause_refs": null,
-        "metadata": null,
-        "not_evaluated_reason": "no LLM client provided"
+        "evidence": [
+          "Confidence: 95.0%",
+          "Reasoning: Clause 9 contains a term that is grossly unfair and heavily one-sided against the tenant. It stipulates that if 'anyone' removes landlord property (including third-party thieves or trespassers without the tenant's knowledge or fault), it automatically constitutes 'abandonment and surrender' of the premises by the tenant, triggering lease termination and potential legal action against the tenant.",
+          "Conflicts: Clause 9 assigns severe liability and automatic lease forfeiture to the tenant for the acts of 'anyone' regarding landlord property, violating the prohibition against grossly unfair or heavily one-sided contract terms."
+        ],
+        "recommendation": "Revise: Clause 9 assigns severe liability and automatic lease forfeiture to the tenant for the acts of 'anyone' regarding landlord property, violating the prohibition against grossly unfair or heavily one-sided contract terms.",
+        "clause_refs": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10"
+        ],
+        "metadata": {
+          "confidence": 0.95,
+          "gaps": [],
+          "conflicts": [
+            "Clause 9 assigns severe liability and automatic lease forfeiture to the tenant for the acts of 'anyone' regarding landlord property, violating the prohibition against grossly unfair or heavily one-sided contract terms."
+          ]
+        },
+        "not_evaluated_reason": null
       }
     ]
   },
@@ -333,12 +380,12 @@
   "stats": {
     "total_text_chars": 8196,
     "num_chunks": 2,
-    "num_clauses": 12,
+    "num_clauses": 14,
     "num_rules_evaluated": 15
   },
   "vector_db": {
     "path": "clause_vectors_legal.json",
-    "document_count": 14
+    "document_count": 16
   },
   "file_info": {
     "name": "rent.pdf",

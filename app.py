@@ -1,6 +1,6 @@
 """
 Main entry point: Unified compliance pipeline for any document, any domain.
-Set GROQ_API_KEY in .env or the environment before running.
+Set GOOGLE_API_KEY in .env or the environment before running.
 
 Usage:
     python app.py --file contract.pdf [--domain legal] [--rules rules_legal.json]
@@ -14,8 +14,10 @@ import sys
 import os
 from pathlib import Path
 
+import env_load
+
 try:
-    from groq_client import GroqClient
+    from google_client import GroqClient
     HAS_LLM = True
 except ImportError:
     HAS_LLM = False
@@ -43,7 +45,7 @@ Examples:
   python app.py --create-rules insurance
   
   # Show document info without processing
-  python app.py --info policy.docx
+    python app.py --file policy.docx --info
         """
     )
     
@@ -126,12 +128,12 @@ Examples:
         sys.exit(1)
     
     # Get API key
-    api_key = os.environ.get("GROQ_API_KEY")
+    api_key = os.environ.get("GOOGLE_API_KEY")
     client = None
     if HAS_LLM and api_key:
         client = GroqClient(api_key=api_key)
     elif not args.no_compliance and not args.no_rag:
-        print("[WARNING] GROQ_API_KEY not set - some features will be limited")
+        print("[WARNING] GOOGLE_API_KEY not set - some features will be limited")
         print("  - LLM-based clause extraction: will use fallback")
         print("  - Semantic compliance checks: SKIP")
         print("  - RAG Q&A: OFFLINE mode only")

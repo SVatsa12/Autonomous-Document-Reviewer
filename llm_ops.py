@@ -4,7 +4,7 @@ import json
 
 from functions import extract_clauses_locally, safe_parse
 
-from groq_client import MODEL_NAME
+from google_client import MODEL_NAME
 API_DISABLED = False
 
 # "single" -> one Groq call per chunk (all rules in one prompt; fewest API calls).
