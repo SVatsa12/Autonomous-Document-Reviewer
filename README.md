@@ -1,64 +1,305 @@
-# Contract clause pipeline (LLM-operable)
+# Universal Compliance Pipeline
 
-This repository is structured so an **LLM agent** can load these instructions, choose actions, and drive execution without guessing file roles.
+This project implements a domain-aware document compliance system that can ingest multiple document types, extract clauses, build a vector index, run configurable compliance checks, and optionally answer natural-language questions against the indexed content.
 
-## Machine-readable project map
+It is no longer limited to a single rental-contract workflow. The current codebase supports:
 
-| Path | Role |
-|------|------|
-| `app.py` | **Orchestrator entry.** Calls Gemini with **function calling**; the model must invoke `run_contract_pipeline`, which runs `main.run_pipeline`. |
-| `main.py` | **Pipeline implementation.** PDF → text → chunks → clause extraction (via `llm_ops`) → rent/deposit analysis → `clauses_output.json`. Runnable with `python main.py` (skips orchestrator). |
-| `llm_ops.py` | **Gemini clause extraction.** Set **`EXTRACTION_API_MODE`**: `"single"` (default) = **one API call per chunk** with all rules in one prompt; `"per_rule"` = initial call + **one call per** `CLAUSE_EXTRACTION_RULES` entry. Tracks **token usage** in `token_tracker`. |
-| `functions.py` | **No LLM.** PDF/text utilities, regex helpers, `check_rent_limit`, `check_deposit_fairness`, and related pure functions. |
-| `env_load.py` | Loads **`.env`** from the project folder (via `python-dotenv`) so `GOOGLE_API_KEY` is set before `genai.Client()`. |
-| `clauses_output.json` | **Output artifact** produced by the pipeline. |
+- PDF, DOCX, and image-based documents
+- Auto-detection of document domain (legal, banking, HR, generic)
+- Custom rules loaded from JSON configuration files
+- Compliance scoring and rule pass/fail reporting
+- Semantic/vector search and RAG-style questions
+- Offline fallback behavior when LLM APIs are unavailable or quota-limited
 
-## Environment
+---
 
-- **`.env`** (recommended): Create or edit `.env` in the project root with `GOOGLE_API_KEY=your_key`. See `.env.example`. The file is gitignored.
-- **`GOOGLE_API_KEY`**: Still works if set in the shell instead of `.env`.
-- Install deps: `pip install -r requirements.txt` (includes `python-dotenv`).
+## What the project does
 
-Do not commit real API keys into tracked files.
+The system processes a document in this flow:
 
-## How an LLM should run the system
+1. Load and validate the input file
+2. Extract text from PDF, DOCX, or image inputs
+3. Split the content into chunks
+4. Extract clauses using LLM logic or local fallback logic
+5. Build a FAISS-backed vector database for semantic retrieval
+6. Evaluate compliance rules against the extracted clauses
+7. Optionally answer questions using the indexed clauses/regulations
 
-1. **Preferred (orchestrated):** Execute `python app.py` from the project root.  
-   - The orchestrator sends one user-equivalent instruction to Gemini with tools.  
-   - Gemini calls `run_contract_pipeline` → `main.run_pipeline` runs.  
-   - Token counts include the orchestrator turn **and** every extraction/rule pass inside `llm_ops`.
+This is implemented across the core modules:
 
-2. **Direct pipeline (no orchestrator tool call):** Execute `python main.py`.  
-   - Same processing except the initial “please call the tool” Gemini turn is skipped.  
-   - Token counts include only extraction/rule passes.
+- `app.py` — command-line entry point
+- `configurable_pipeline.py` — end-to-end processing pipeline
+- `document_processor.py` — multi-format document ingestion
+- `compliance_engine.py` — rules and rule evaluation engine
+- `vector_db.py` — FAISS vector database + persistence
+- `rag_engine.py` — RAG query layer
+- `query_contract.py` — query CLI
+- `offline_query.py` — offline fallback querying
 
-## Clause extraction API modes (`llm_ops.EXTRACTION_API_MODE`)
+---
 
-- **`single` (default):** One Gemini request per chunk; the prompt lists every rule in `CLAUSE_EXTRACTION_RULES` and asks for one JSON array. **Fewest API calls.**
-- **`per_rule`:** One call for an initial extraction, then **one call per rule** to refine the JSON (matches “each rule = one LLM call” assignments). **More API calls, slower.**
+## Supported inputs
 
-If the API is unavailable or quota is hit, the code sets `API_DISABLED` and falls back to **local regex extraction** (no tokens for those steps).
+The current `DocumentProcessor` supports these file formats:
 
-## Token reporting
+- `.pdf`
+- `.docx`
+- `.png`
+- `.jpg` / `.jpeg`
+- `.tiff` / `.tif`
 
-After `main.run_pipeline` finishes, the process prints a **cumulative** summary:
+It also includes OCR fallback support for scanned images / scanned PDFs when the required libraries are installed.
 
-- `API calls counted` — responses that included `usage_metadata`
-- `Prompt tokens (sum)`
-- `Candidates tokens (sum)`
-- `Total tokens (sum of per-response totals)`
+---
 
-When using `app.py`, the orchestrator response is included in the same tracker before the report.
+## Supported domains
 
-## Contract assumptions for agents
+The app can target or auto-detect these domains:
 
-- Default PDF path is `rent2.pdf` in the working directory unless the tool argument overrides it.
-- Rent limit for policy check is **80000** (see `functions.check_rent_limit`).
-- Chunking uses **`CHUNK_MAX_CHARS = 8000`** in `main.py` (tune there). Sleep between chunks is **`CHUNK_SLEEP_SEC = 2`** to reduce rate-limit risk; increase if you hit 429 errors.
+- `legal`
+- `banking`
+- `hr`
+- `generic`
+- `insurance` (template generation supported)
+- `real_estate` (template generation supported)
+
+Domain detection is based on filename and content heuristics in `document_processor.py`.
+
+---
+
+## Environment setup
+
+1. Create a virtual environment if needed.
+2. Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+3. Set your API key(s) in a local `.env` file or environment variables.
+
+Common variables used by the project:
+
+- `GROQ_API_KEY` — used by the Groq-powered pipeline and query tools
+- `GOOGLE_API_KEY` — used by Google GenAI-based embedding/extraction flows when applicable
+
+Example `.env`:
+
+```bash
+GROQ_API_KEY=your_key_here
+GOOGLE_API_KEY=your_key_here
+```
+
+The loader in `env_load.py` will try to load `.env` automatically when present.
+
+> Do not commit real API keys to source control.
+
+---
+
+## Quick start
+
+### Run the universal pipeline
+
+```bash
+python app.py --file path/to/document.pdf
+```
+
+### Specify a domain and rules file
+
+```bash
+python app.py --file loan_application.docx --domain banking --rules rules_banking.json
+```
+
+### Show file information without processing
+
+```bash
+python app.py --info policy.docx
+```
+
+### Create a rules template for a new domain
+
+```bash
+python app.py --create-rules insurance
+```
+
+### Skip compliance checks
+
+```bash
+python app.py --file contract.pdf --no-compliance
+```
+
+### Disable RAG features
+
+```bash
+python app.py --file contract.pdf --no-rag
+```
+
+---
+
+## CLI options
+
+`app.py` supports the following options:
+
+```bash
+python app.py --file <path> [--domain legal|banking|hr|generic|insurance|real_estate]
+              [--rules <path>]
+              [--no-compliance]
+              [--no-rag]
+              [--output <path>]
+              [--create-rules DOMAIN]
+              [--info]
+```
+
+The app writes JSON results to the selected output file, defaulting to `results.json`.
+
+---
+
+## Rule engine
+
+The compliance engine supports multiple rule types:
+
+- `threshold` — max/min/range/ratio checks
+- `presence` — required clause/concept checks
+- `forbidden` — blocked language or prohibited terms
+- `semantic` — semantic comparison using vector/search context and LLM reasoning
+
+These rules can be loaded from rule JSON files such as:
+
+- `rules_legal.json`
+- `rules_banking.json`
+- `rules_hr.json`
+
+The engine evaluates rule results and produces:
+
+- pass/fail state
+- severity level
+- evidence and recommendations
+- compliance score and overall status
+- critical issue summaries
+
+---
+
+## RAG and vector search
+
+The project includes a retrieval layer for asking natural-language questions against the processed document and supporting regulations.
+
+### Query examples
+
+```bash
+python query_contract.py -q "What is the security deposit amount?"
+```
+
+Interactive mode:
+
+```bash
+python query_contract.py
+```
+
+Offline fallback:
+
+```bash
+python offline_query.py
+```
+
+The vector database is backed by FAISS and supports:
+
+- clause indexing
+- regulation metadata search
+- hybrid retrieval (semantic + lexical ranking)
+- persistence to disk
+- offline fallback behavior when LLM calls fail
+
+---
+
+## Legacy pipeline
+
+The repository still contains a legacy, contract-focused flow in `main.py` for direct processing of rental/lease-style documents:
+
+```bash
+python main.py
+```
+
+This older path is useful for contract/rental analysis and writes clause artifacts, but the universal flow in `app.py` is the primary current interface.
+
+---
+
+## Key files
+
+| File | Purpose |
+|---|---|
+| `app.py` | Unified CLI entry point |
+| `configurable_pipeline.py` | End-to-end processing pipeline |
+| `document_processor.py` | Multi-format document ingestion and domain detection |
+| `compliance_engine.py` | Rule engine and compliance evaluation |
+| `vector_db.py` | FAISS vector database and persistence |
+| `rag_engine.py` | Retrieval and answer generation |
+| `query_contract.py` | Command-line RAG interface |
+| `offline_query.py` | Offline querying fallback |
+| `rules_*.json` | Domain rule definitions |
+| `regulations.json` | Regulatory corpus used by retrieval |
+
+---
+
+## Outputs
+
+The app produces structured JSON output such as:
+
+- `results.json` — main pipeline output
+- `clause_vectors.json` — vector store persistence
+- `clause_vectors_<domain>.json` — domain-specific vector store path used in some runs
+- `compliance.json` — compliance output in some workflows
+
+The pipeline result includes:
+
+- extracted clauses
+- domain metadata
+- vector DB path
+- compliance score and rule results
+- stats such as characters extracted and chunks processed
+
+---
 
 ## Dependencies
 
-- `google-genai` (Gemini client)
-- `pypdf`
+The project uses packages including:
 
-Install as needed for the active Python environment.
+- `google-genai`
+- `groq`
+- `pypdf`
+- `python-docx`
+- `python-dotenv`
+- `faiss-cpu`
+- `numpy`
+- `pillow`
+- `pytesseract`
+- `pdf2image`
+
+Install them with:
+
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+## Notes
+
+- The project is designed to work even when API access is limited; many components degrade gracefully.
+- RAG behavior can run in offline mode when the LLM client is unavailable or quota is exceeded.
+- For new use cases, create a domain rule file with `--create-rules DOMAIN` and customize the generated JSON.
+
+---
+
+## Recommended workflow
+
+For practical use, the recommended path is:
+
+```bash
+python app.py --file path/to/document.pdf --domain legal
+```
+
+Then, if you want to query the generated clause database:
+
+```bash
+python query_contract.py -q "Summarize the key obligations in this document"
+```
